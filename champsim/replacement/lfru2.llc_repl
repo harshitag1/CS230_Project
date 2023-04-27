@@ -4,8 +4,8 @@
 #define DECAY 1
 #define STEP 16000
 
-uint64_t freqs[LLC_SET][LLC_WAY];
-uint64_t numRounds = 0;
+uint64_t freqs[LLC_SET][LLC_WAY];               // a list of frequencies for the lfu part of the policy
+uint64_t numRounds = 0;                         //counts the number of memory accesses made in total
 
 
 // initialize replacement state
@@ -13,7 +13,7 @@ void CACHE::llc_initialize_replacement()
 {
     for(uint32_t i=0; i < LLC_SET; i++){
         for( uint32_t j = 0; j < LLC_WAY; j++){
-            freqs[i][j] = 0;
+            freqs[i][j] = 0;                    //set frequencies to 0
         }
     }
 }
@@ -41,28 +41,28 @@ uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, c
     uint32_t max_lru = block[set][0].lru;
 
     // LFRU victim
-    if (way == NUM_WAY) {
+    if (way == NUM_WAY) {                       //no invalid line was found
         uint8_t done = 0;
 
         for ( uint32_t j = 0 ; j < LLC_WAY ; j++ ){
-            if ( (freqs[set][j] <= min_freq) && (freqs[set][j] > LFRU_THRESH)){
+            if ( (freqs[set][j] <= min_freq) && (freqs[set][j] > LFRU_THRESH)){                 //the value of freq must be greater than the threshold value to be evicted
                 min_freq = freqs[set][j];
                 max_lru = block[set][j].lru;
                 //way = j;
-                done = 1;
+                done = 1;                                           //checking if a victim has been found
             }
         }
 
-        if(done==0){
-            return lru_victim(cpu, instr_id, set, current_set, ip, full_addr, type);
+        if(done==0){                    //if no victim is found, we just use the lru policy to find the victim 
+            return lru_victim(cpu, instr_id, set, current_set, ip, full_addr, type);        //call the lru victim function
         }
 
         
-        for(uint32_t k=0; k<LLC_WAY; k++){
+        for(uint32_t k=0; k<LLC_WAY; k++){      //if a victim has been found, we go through the ways again but this time look at lru for the max
             if(freqs[set][k] == min_freq){
                 if(block[set][k].lru >= max_lru){
                     max_lru = block[set][k].lru;
-                    way = k;
+                    way = k;                                //find max lru for the min lfu and set the way to this indez
                 }
             }
         }
@@ -111,6 +111,9 @@ void CACHE::llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t wa
     // cout << "CPU: " << cpu << "  LLC " << setw(9) << TYPE_NAME << " set: " << setw(5) << set << " way: " << setw(2) << way;
     // cout << hex << " paddr: " << setw(12) << paddr << " ip: " << setw(8) << ip << " victim_addr: " << victim_addr << dec << endl;
 
+
+
+    //update the states as mentioned in the basic lfru file
     if (hit && (type == WRITEBACK)){// writeback hit does not update LRU state
         freqs[set][way]++;
     }else if(hit){

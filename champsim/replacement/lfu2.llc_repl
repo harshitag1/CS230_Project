@@ -1,13 +1,18 @@
 #include "cache.h"
 
-uint64_t freqs[LLC_SET][LLC_WAY];       //a list of the frequencies used in the lfu part of this code
-
 // initialize replacement state
+uint64_t freqs[LLC_SET][LLC_WAY];
+uint64_t numRounds = 0;
+#define LFU_THRESH 100
+#define DECAY 1
+#define STEP 100100
+
+
 void CACHE::llc_initialize_replacement()
 {
-    for(uint32_t i=0; i < LLC_SET; i++){
-        for( uint32_t j = 0; j < LLC_WAY; j++){
-            freqs[i][j] = 0;            //set each frequency value to 0
+    for ( uint32_t i = 0 ; i < LLC_SET ; i++ ){
+        for ( uint32_t j = 0 ; j < LLC_WAY ; j++ ){
+            freqs[i][j] = 0;
         }
     }
 }
@@ -15,7 +20,7 @@ void CACHE::llc_initialize_replacement()
 // find replacement victim
 uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
-// baseline LFRU
+    // baseline LRU
     uint32_t way = 0;
 
     // fill invalid line first
@@ -31,38 +36,33 @@ uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, c
         }
     }
 
-    uint64_t min_freq = freqs[set][0];
-    uint32_t max_lru = block[set][0].lru;
+    // LRU victim
+    if (way == NUM_WAY) {
+        uint64_t m = 0;
+	uint8_t done = 0;
 
-    // LFRU victim
-    if (way == NUM_WAY) {           //no invalid line
-
-        for ( uint32_t j = 0 ; j < LLC_WAY ; j++ ){         //finding the minimum value of lfu first
-            if ( freqs[set][j] <= min_freq ){
-                min_freq = freqs[set][j];
-                max_lru = block[set][j].lru;                //setting the max lru whenever we see a minimum
-                //way = j;
+        for ( uint32_t j = 0 ; j < LLC_WAY ; j++ ){
+            if ( freqs[set][j] <= freqs[set][m] && freqs[set][j] >= LFU_THRESH){
+                m = j;
+		done = 1;
             }
         }
-
-        //for all ties in lfu, find the one with the highest LRU
-        for(uint32_t k=0; k<LLC_WAY; k++){
-            if(freqs[set][k] == min_freq){
-                if(block[set][k].lru >= max_lru){
-                    max_lru = block[set][k].lru;
-                    way = k;                                //setting the value of k as the required way to be evicted
-                }
-            }
-        }
-        
-
+	
+	if(done==0){
+		m = 0;
+		for ( uint32_t j = 0 ; j < LLC_WAY ; j++ ){
+            		if ( freqs[set][j] <= freqs[set][m]){
+                		m = j;
+            		}
+        	}
+	}
+	
+        way = m;
                 DP ( if (warmup_complete[cpu]) {
                 cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
                 cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
                 cout << dec << " lru: " << block[set][way].lru << endl; });
     }
-
-
 
     if (way == NUM_WAY) {
         cerr << "[" << NAME << "] " << __func__ << " no victim! set: " << set << endl;
@@ -71,8 +71,10 @@ uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, c
 
     return way;
 
+    // return lru_victim(cpu, instr_id, set, current_set, ip, full_addr, type); 
 }
 
+// called on every cache hit and cache fill
 void CACHE::llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, uint64_t full_addr, uint64_t ip, uint64_t victim_addr, uint32_t type, uint8_t hit)
 {
     string TYPE_NAME;
@@ -98,21 +100,23 @@ void CACHE::llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t wa
     // uncomment this line to see the LLC accesses
     // cout << "CPU: " << cpu << "  LLC " << setw(9) << TYPE_NAME << " set: " << setw(5) << set << " way: " << setw(2) << way;
     // cout << hex << " paddr: " << setw(12) << paddr << " ip: " << setw(8) << ip << " victim_addr: " << victim_addr << dec << endl;
-
-    if (hit && (type == WRITEBACK)){// writeback hit does not update LRU state but updates the LFU state
+    if ( hit ){
         freqs[set][way]++;
-    }else if(hit){              //other hits update both states
-        freqs[set][way]++;
-        lru_update(set,way);
-    }else{
-        freqs[set][way] = 0;        //a miss initializes lfu to 0 and updates lru using the function defined
-        lru_update(set,way);
     }
-    return;
+    else{
+        freqs[set][way]=0;
+    }
+	for(uint64_t i = 0;i<NUM_WAY;i++){
+		if(numRounds%STEP==0){
+			freqs[set][i] = freqs[set][i] - DECAY;
+		}		
+	}
+	numRounds = numRounds + 1;
+   
 }
-
 
 void CACHE::llc_replacement_final_stats()
 {
 
 }
+
