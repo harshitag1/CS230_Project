@@ -1,4 +1,5 @@
 # l1d,l2c,llc number of sets will be changed with this script
+# also used to control whether it is inclusive, exclusive or non-inclusive
 
 if [[ $4 != 1 && $4 != 2 && $4 != 3 ]]; then
     echo "Inclusive/Exclusive/Non-Inclusive for 1,2,3 only"

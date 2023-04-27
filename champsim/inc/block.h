@@ -52,10 +52,10 @@ class BLOCK {
         cpu = 0;
         instr_id = 0;
 
-        lru = 0;
-        lfu = 0;
-        fifo = 0;
-        lirs = INF;
+        lru = 0;            //initial lru is 0
+        lfu = 0;            //initial lfu is 0
+        fifo = 0;           //initial fifo is 0
+        lirs = INF;         //initial lirs is 0
     };
 };
 

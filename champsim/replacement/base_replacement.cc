@@ -18,6 +18,8 @@ void CACHE::update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, u
     return lru_update(set, way);
 }
 
+
+// Function to find the way that is to be replaced by the fifo policy
 uint32_t CACHE::fifo_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {  
     uint32_t way = 0;
@@ -95,7 +97,7 @@ uint32_t CACHE::fifo_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const
 //     return way;
 // }
 
-
+// Function to find the way that is to be replaced by the lru policy
 uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
     uint32_t way = 0;
@@ -285,6 +287,8 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
 //     return way;
 // }
 
+
+// Function to update the values of .lru for each block[set][way] in the given set
 void CACHE::lru_update(uint32_t set, uint32_t way)
 {
     // update lru replacement state

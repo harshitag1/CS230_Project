@@ -45,7 +45,7 @@ uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, c
             }
         }
 
-        
+        //for all ties in lfu, find the one with the highest LRU
         for(uint32_t k=0; k<LLC_WAY; k++){
             if(freqs[set][k] == min_freq){
                 if(block[set][k].lru >= max_lru){
@@ -99,13 +99,13 @@ void CACHE::llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t wa
     // cout << "CPU: " << cpu << "  LLC " << setw(9) << TYPE_NAME << " set: " << setw(5) << set << " way: " << setw(2) << way;
     // cout << hex << " paddr: " << setw(12) << paddr << " ip: " << setw(8) << ip << " victim_addr: " << victim_addr << dec << endl;
 
-    if (hit && (type == WRITEBACK)){// writeback hit does not update LRU state
+    if (hit && (type == WRITEBACK)){// writeback hit does not update LRU state but updates the LFU state
         freqs[set][way]++;
-    }else if(hit){
+    }else if(hit){              //other hits update both states
         freqs[set][way]++;
         lru_update(set,way);
     }else{
-        freqs[set][way] = 0;
+        freqs[set][way] = 0;        //a miss initializes lfu to 0 and updates lru using the function defined
         lru_update(set,way);
     }
     return;

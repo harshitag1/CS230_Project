@@ -7,6 +7,7 @@
 // PAGE
 extern uint32_t PAGE_TABLE_LATENCY, SWAP_LATENCY;
 
+
 #define INC_POLICY 3
 #define INCLUSIVE 1
 #define EXCLUSIVE 2
