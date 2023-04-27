@@ -1,0 +1,276 @@
+sed -i 's/^#define LLC_WAY 16$/#define LLC_WAY 1/' ./inc/cache.h
+./build_champsim.sh bimodal no no no no lru 1
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_1
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_1
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_1
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_1
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_1/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no fifo 1
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_1
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_1
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_1
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_1
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_1/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no lfu 1
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_1
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_1
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_1
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_1
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_1/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no random 1
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_random_20_30_1
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_random_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_1
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_1
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_1/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_1
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_1/
+rm -rf results_30M
+sed -i 's/^#define LLC_WAY 1$/#define LLC_WAY 4/' ./inc/cache.h
+./build_champsim.sh bimodal no no no no lru 1
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_4
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_4
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_4
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_4
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_4/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no fifo 1
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_4
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_4
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_4
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_4
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_4/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no lfu 1
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_4
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_4
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_4
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_4
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_4/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no random 1
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_random_20_30_4
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_random_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_4
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_4
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_4/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_4
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_4/
+rm -rf results_30M
+sed -i 's/^#define LLC_WAY 4$/#define LLC_WAY 16/' ./inc/cache.h
+./build_champsim.sh bimodal no no no no lru 1
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_16
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_16
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_16
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_16
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_16/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no fifo 1
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_16
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_16
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_16
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_16
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_16/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no lfu 1
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_16
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_16
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_16
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_16
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_16/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no random 1
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_random_20_30_16
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_random_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_16
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_16
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_16/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_16
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_16/
+rm -rf results_30M
+sed -i 's/^#define LLC_WAY 16$/#define LLC_WAY 32/' ./inc/cache.h
+./build_champsim.sh bimodal no no no no lru 1
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_32
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lru_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_32
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lru_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_32
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lru_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lru-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_32
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lru_20_30_32/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no fifo 1
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_32
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_fifo_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_32
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_fifo_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_32
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_fifo_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-fifo-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_32
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_fifo_20_30_32/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no lfu 1
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_32
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_lfu_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_32
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_lfu_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_32
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_lfu_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-lfu-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_32
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_lfu_20_30_32/
+rm -rf results_30M
+./build_champsim.sh bimodal no no no no random 1
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 403.gcc-16B.champsimtrace.xz
+mkdir results/results_403.gcc-16B.champsimtrace.xz_random_20_30_32
+cp results_30M/* results/results_403.gcc-16B.champsimtrace.xz_random_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 436.cactusADM-1804B.champsimtrace.xz
+mkdir results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_32
+cp results_30M/* results/results_436.cactusADM-1804B.champsimtrace.xz_random_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 482.sphinx3-1100B.champsimtrace.xz
+mkdir results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_32
+cp results_30M/* results/results_482.sphinx3-1100B.champsimtrace.xz_random_20_30_32/
+rm -rf results_30M
+./run_champsim.sh bimodal-no-no-no-no-random-1core 20 30 400.perlbench-41B.champsimtrace.xz
+mkdir results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_32
+cp results_30M/* results/results_400.perlbench-41B.champsimtrace.xz_random_20_30_32/
+rm -rf results_30M

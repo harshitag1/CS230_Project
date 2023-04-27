@@ -1,0 +1,201 @@
+#include "cache.h"
+
+
+#define RR_LEN 32
+
+int testing_variable = 0;
+int testing_variable2 = 0;
+
+// defining the necessary buffers
+int prefetch_bit[L2C_SET][L2C_WAY];
+uint64_t rrtable1[RR_LEN];
+uint64_t rrtable2[RR_LEN];
+int offset_val[42] = {-36, -35, -33, -30, -28, -26, -24, -20, -18, -16, -15, -14,  -13, -12, -10, -8, -6, -5, -4, -2, -1, 1, 2, 4, 5, 6, 8, 10, 12, 14,  15, 16, 18, 20, 24, 26, 28, 30, 33, 35, 36};
+int offset_score[42] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int num_rounds = 0;
+int current_offset = 1;
+uint64_t delay_queue[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//hash function definition
+uint64_t get_hash1(uint64_t key)
+{
+    // Robert Jenkins' 32 bit mix function
+    
+    key += (key << 12);
+    key ^= (key >> 22);
+    key += (key << 4);
+    key ^= (key >> 9);
+    key += (key << 10);
+    key ^= (key >> 2);
+    key += (key << 7);
+    key ^= (key >> 12);
+    
+    // Knuth's multiplicative method
+    key = (key >> 3) * 2654435761;
+
+    return key;
+}
+
+uint64_t get_hash2(uint64_t key)
+{
+    // Robert Jenkins' 32 bit mix function
+    
+    key += (key << 12);
+    key ^= (key >> 22);
+    key += (key << 4);
+    key ^= (key >> 9);
+    key += (key << 10);
+    key ^= (key >> 2);
+    key += (key << 7);
+    key ^= (key >> 12);
+    
+    // Knuth's multiplicative method
+    key = (key >> 3) * 2656635769;
+
+    return key;
+}
+
+int find_max_index(uint64_t addr){
+    int max_score = 0;
+    int max_index = 0;
+    num_rounds++;
+/*
+	for (int i = 0; i < 100; i++) {
+	if (max_score >= 15) break;
+        for (int j = 0; j < 20; j++) {
+            uint64_t new_addr = (addr>>LOG2_BLOCK_SIZE) + offset_val[j];
+            if (rrtable1[get_hash1(new_addr) % 32] == new_addr 
+            || (rrtable2[get_hash2(new_addr) % 32] == new_addr)) offset_score[i]++;
+        }
+
+        for(int k = 0; k < 10; k++) {
+            if (offset_score[k] > max_score){
+                max_score = offset_score[k];
+                max_index = k;
+            }
+        }
+    }
+*/
+	
+
+  	 for (int j = 0; j < 42; j++) {
+                uint64_t new_addr = (addr>>LOG2_BLOCK_SIZE) - offset_val[j];
+                if ( (rrtable1[get_hash1(new_addr) % RR_LEN] == new_addr)
+                || (rrtable2[get_hash2(new_addr) % RR_LEN] == new_addr)) { testing_variable++; offset_score[j]++;}
+  	 }
+
+        for (int k = 0; k < 42; k++) {
+            if (offset_score[k] > max_score){
+                max_score = offset_score[k];
+                max_index = k;
+            }
+        }
+
+        if (max_score >= 20 || num_rounds >= 100){
+            current_offset = offset_val[max_index];
+            if ( offset_score[max_index] <= 2 ){
+                current_offset = 1;
+            }
+            num_rounds = 0;
+            for (int i = 0; i < 42; i++) {
+                 offset_score[i] = 0;
+	    }
+    
+        }
+        return current_offset;
+
+}
+
+
+void CACHE::l2c_prefetcher_initialize() { cout << "CPU " << cpu << " L2C best offset prefetcher" << endl; }
+
+uint32_t CACHE::l2c_prefetcher_operate(
+    uint64_t addr, uint64_t ip, uint8_t cache_hit, uint8_t type, uint32_t metadata_in) {
+    // if (type != LOAD)
+    //     return metadata_in;
+    // cout << "function starts\n";
+
+/*
+    uint64_t pf_addr = ((addr >> LOG2_BLOCK_SIZE) + 1) << LOG2_BLOCK_SIZE;
+
+    DP(if (warmup_complete[cpu]) {
+        cout << "[" << NAME << "] " << __func__ << hex << " base_cl: " << (addr >> LOG2_BLOCK_SIZE);
+        cout << " pf_cl: " << (pf_addr >> LOG2_BLOCK_SIZE) << " ip: " << ip << " cache_hit: " << +cache_hit
+             << " type: " << +type << endl;
+    });
+
+*/
+    //if (cache_hit == 1 || prefetch_bit[])
+    //prefetch_line(ip, addr, pf_addr, FILL_L2, 0);
+
+    if (cache_hit) {
+        int set = get_set(addr);
+        int way = 0;
+
+        for (int i = 0; i < L2C_WAY; i++) {
+            if (block[set][way].address == addr)
+            break;
+        }
+
+        int best_offset;
+
+        if (block[set][way].prefetch != 0) {
+            best_offset = find_max_index(addr);
+            uint64_t pf_addr = ((addr >> LOG2_BLOCK_SIZE) + best_offset) << LOG2_BLOCK_SIZE;
+            prefetch_line(ip, addr, pf_addr, FILL_L2, 0);
+            prefetch_bit[set][way] = 0;
+            rrtable1[get_hash1(addr >> LOG2_BLOCK_SIZE) % RR_LEN] = (  addr >> LOG2_BLOCK_SIZE );
+	    //rrtable2[get_hash2(addr >> LOG2_BLOCK_SIZE) % RR_LEN] = (  addr >> LOG2_BLOCK_SIZE );
+
+	    rrtable2[get_hash2(delay_queue[9] >> LOG2_BLOCK_SIZE) % RR_LEN] = (  delay_queue[9] >> LOG2_BLOCK_SIZE );
+
+            for (int p = 0; p < 8; p++) {
+                delay_queue[p+1] = delay_queue[p];
+
+       	    }
+            delay_queue[0] = addr;
+            //delay_slot = addr;
+	    DP(if (warmup_complete[cpu]) {
+        cout << "[" << NAME << "] " << __func__ << hex << " base_cl: " << (addr >> LOG2_BLOCK_SIZE);
+        cout << " pf_cl: " << (pf_addr >> LOG2_BLOCK_SIZE) << " ip: " << ip << " cache_hit: " << +cache_hit
+             << " type: " << +type << endl;
+    	});
+
+        }
+
+        
+    } else {
+        int best_offset = find_max_index(addr);
+        uint64_t pf_addr = ((addr >> LOG2_BLOCK_SIZE) + best_offset) << LOG2_BLOCK_SIZE;
+        prefetch_line(ip, addr, pf_addr, FILL_L2, 0);
+        rrtable1[get_hash1(addr >> LOG2_BLOCK_SIZE) % RR_LEN] = (  addr >> LOG2_BLOCK_SIZE );
+	rrtable2[get_hash2(delay_queue[9] >> LOG2_BLOCK_SIZE) % RR_LEN] = (  delay_queue[9] >> LOG2_BLOCK_SIZE );
+	
+	for (int p = 0; p < 8; p++) {
+		delay_queue[p+1] = delay_queue[p];
+		
+	}
+	delay_queue[0] = addr;
+	DP(if (warmup_complete[cpu]) {
+        cout << "[" << NAME << "] " << __func__ << hex << " base_cl: " << (addr >> LOG2_BLOCK_SIZE);
+        cout << " pf_cl: " << (pf_addr >> LOG2_BLOCK_SIZE) << " ip: " << ip << " cache_hit: " << +cache_hit
+             << " type: " << +type << endl;
+    	});
+    }
+
+    return metadata_in;
+}
+
+uint32_t CACHE::l2c_prefetcher_cache_fill(
+    uint64_t addr, uint32_t set, uint32_t way, uint8_t prefetch, uint64_t evicted_addr, uint32_t metadata_in) {
+    return metadata_in;
+
+    if (prefetch) {
+        block[set][way].prefetch = 1;
+    }
+}
+
+void CACHE::l2c_prefetcher_final_stats() { cout << "CPU " << cpu << " L2C next line prefetcher final stats" << endl; }
+
+
+
+
