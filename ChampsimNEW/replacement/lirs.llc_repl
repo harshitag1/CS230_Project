@@ -1,0 +1,159 @@
+#include "cache.h"
+
+#define INF INT_MAX
+
+
+// initialize replacement state
+void CACHE::llc_initialize_replacement()
+{
+
+}
+
+// find replacement victim
+uint32_t CACHE::llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
+{
+    // baseline LIRS
+    uint32_t way = 0;
+    uint64_t max_lirs = 0;
+
+    // fill invalid line first
+    for (way=0; way<NUM_WAY; way++) {
+        //uint64_t addr = block[set][way].address;
+        //int po = 0;
+        //for(int i=0;i<LIRS_SIZE;i++){
+        //    if(addresses[i]==addr){
+        //        po = i;
+        //        break;
+        //    }
+        //}
+        if (block[set][way].valid == false) {
+            DP ( if (warmup_complete[cpu]) {
+            cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " invalid set: " << set << " way: " << way;
+            cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+            cout << dec << " lirs: " << INF << endl; });
+
+            break;
+        }
+    }
+
+    // LIRS victim
+    if (way == NUM_WAY) {
+        int jndex = 0;
+        for (int i=0; i<NUM_WAY; i++) {
+            uint64_t addr = block[set][i].address;
+            for(int j=0;j<LIRS_SIZE;j++){
+                if(addresses[j]==addr){
+                    jndex = j;
+                    break;
+                }
+            }
+            if (lirs[jndex] >= max_lirs) {
+                max_lirs = lirs[jndex];
+                way = i;
+            }
+        }
+        present[jndex] = 0;
+        DP ( if (warmup_complete[cpu]) {
+        cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
+        cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+        cout << dec << " lirs: " << lirs[jndex] << endl; });
+    }
+
+    if (way == NUM_WAY) {
+        cerr << "[" << NAME << "] " << __func__ << " no victim! set: " << set << endl;
+        assert(0);
+    }
+
+    return way; 
+}
+
+// called on every cache hit and cache fill
+void CACHE::llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, uint64_t full_addr, uint64_t ip, uint64_t victim_addr, uint32_t type, uint8_t hit)
+{
+    string TYPE_NAME;
+    if (type == LOAD)
+        TYPE_NAME = "LOAD";
+    else if (type == RFO)
+        TYPE_NAME = "RFO";
+    else if (type == PREFETCH)
+        TYPE_NAME = "PF";
+    else if (type == WRITEBACK)
+        TYPE_NAME = "WB";
+    else
+        assert(0);
+
+    if (hit)
+        TYPE_NAME += "_HIT";
+    else
+        TYPE_NAME += "_MISS";
+
+    if ((type == WRITEBACK) && ip)
+        assert(0);
+
+    // uncomment this line to see the LLC accesses
+    // cout << "CPU: " << cpu << "  LLC " << setw(9) << TYPE_NAME << " set: " << setw(5) << set << " way: " << setw(2) << way;
+    // cout << hex << " paddr: " << setw(12) << paddr << " ip: " << setw(8) << ip << " victim_addr: " << victim_addr << dec << endl;
+
+    // baseline LIRS
+    if (hit && (type == WRITEBACK)) // writeback hit does not update LRU state
+        return;
+
+    uint64_t addr = block[set][way].address;
+    int found = 0;
+    int index = 0;
+    for(int i=0;i<LIRS_SIZE;i++){
+        if(addr == addresses[i]){
+            found = 1;
+            index = i;
+            break;
+        }
+    }
+
+    if(hit){            //hit means it HAS to be found
+        if(block[set][way].lru<lirs[index]){
+            lirs[index] = block[set][way].lru;
+            present[index] = 1;
+        }
+    }
+    else{
+        if(found){
+            lirs[index] = INF;              //FIX THIS
+            present[index] = 1;
+        }
+        else{
+            uint8_t done = 0;
+            //add to lirs and addresses
+            for(int i=0;i<LIRS_SIZE;i++){
+                if(addresses[i]==0){
+                    //fill it here
+                    addresses[i] = addr;
+                    lirs[i] = INF;          
+                    present[i] = 1;
+                    done = 1;
+                    break;
+                }
+            }
+            if(done==0){
+                uint64_t maxlirs = 0;
+                int pos = 0;
+                for(int i=0;i<LIRS_SIZE;i++){
+                    if(present[i]==0 && lirs[i]>maxlirs){
+                        maxlirs = lirs[i];
+                        pos = i;
+                    }
+                }
+                addresses[pos] = addr;
+                lirs[pos] = INF;
+                present[pos] = 1;
+            }
+        }
+    }
+    lru_update(set, way);
+    return;
+
+}
+
+void CACHE::llc_replacement_final_stats()
+{
+
+}

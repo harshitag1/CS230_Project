@@ -1,0 +1,71 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 5000000
+Simulation Instructions: 10000000
+Number of CPUs: 1
+LLC sets: 2048
+LLC ways: 32
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/sn
+CPU 0 runs ../traces//bfs-3.trace.gznCPU 0 Bimodal branch predictor
+
+Warmup complete CPU 0 instructions: 5000002 cycles: 1477480 (Simulation time: 0 hr 0 min 4 sec) 
+
+Heartbeat CPU 0 instructions: 10000000 cycles: 15869970 heartbeat IPC: 0.630121 cumulative IPC: 0.347403 (Simulation time: 0 hr 0 min 11 sec) 
+Finished CPU 0 instructions: 10000003 cycles: 34579259 cumulative IPC: 0.289191 (Simulation time: 0 hr 0 min 19 sec) 
+
+ChampSim completed all CPUs
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 0.289191 instructions: 10000003 cycles: 34579259
+L1D TOTAL     ACCESS:    2089666  HIT:    1775160  MISS:     314506
+L1D LOAD      ACCESS:    1437764  HIT:    1163734  MISS:     274030
+L1D RFO       ACCESS:     651902  HIT:     611426  MISS:      40476
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 91.9565 cycles
+L1I TOTAL     ACCESS:    2253149  HIT:    2253112  MISS:         37
+L1I LOAD      ACCESS:    2253149  HIT:    2253112  MISS:         37
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: 211.676 cycles
+L2C TOTAL     ACCESS:     369665  HIT:     185222  MISS:     184443
+L2C LOAD      ACCESS:     274067  HIT:     129056  MISS:     145011
+L2C RFO       ACCESS:      40476  HIT:       1044  MISS:      39432
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:      55122  HIT:      55122  MISS:          0
+L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L2C AVERAGE MISS LATENCY: 130.34 cycles
+LLC TOTAL     ACCESS:     237886  HIT:      58084  MISS:     179802
+LLC LOAD      ACCESS:     145011  HIT:       4020  MISS:     140991
+LLC RFO       ACCESS:      39432  HIT:       1024  MISS:      38408
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:      53443  HIT:      53040  MISS:        403
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+LLC AVERAGE MISS LATENCY: 102.59 cycles
+Major fault: 0 Minor fault: 6250
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:     127922  ROW_BUFFER_MISS:      51477
+ DBUS_CONGESTED:      28826
+ WQ ROW_BUFFER_HIT:        223  ROW_BUFFER_MISS:        382  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 5
+
+CPU 0 Branch Prediction Accuracy: 79.6366% MPKI: 40.307 Average ROB Occupancy at Mispredict: 6.62437
+
+Branch types
+NOT_BRANCH: 8020620 80.2062%
+BRANCH_DIRECT_JUMP: 75 0.00075%
+BRANCH_INDIRECT: 0 0%
+BRANCH_CONDITIONAL: 1979250 19.7925%
+BRANCH_DIRECT_CALL: 30 0.0003%
+BRANCH_INDIRECT_CALL: 0 0%
+BRANCH_RETURN: 30 0.0003%
+BRANCH_OTHER: 0 0%
+
