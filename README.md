@@ -1,6 +1,6 @@
 # CS230_Project
 
-Team ASAP
+Team ASA
 
 1. Harshit Agarwal - 210020054
 
