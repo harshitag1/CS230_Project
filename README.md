@@ -22,10 +22,10 @@ Link to our video - https://youtu.be/tIVXPxivN58
 ## Implementation
 We have implemented Inclusive and Exclusive cache inclusion policies over the default Non-Inclusive policy. Also we tested our code for different cache sizes by varying the number of sets. They can be checked using the bash script 'cache_size.sh'. 
 
-It takes 4 arguments 'L1D-sets L2-sets LLC-sets policy'. Replace policy with 1 for inclusive, 2 for exclusive and 3 for non-inclusive. After running this bash script, run the champsim as usual and it will work according to the specifications.
-
 ```bash
-./cache_size.sh [L1D_SETS] [L2C_SETS] [LLC_SETS] [POLICY]```
+./cache_size.sh [L1D_SETS] [L2C_SETS] [LLC_SETS] [POLICY]
+```
+Where policy can be initialised with 1 for inclusive, 2 for exclusive and 3 for non-inclusive. After running this bash script, run the champsim as usual and it will work according to the specifications.
 
 ## Optimizations:
 1. Optimal implementations of inclusive, exclusive and non-inclusive caches
